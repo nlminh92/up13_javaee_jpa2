@@ -31,8 +31,6 @@ public class Maire {
     public Maire(String nom, Commune commune) {
         this.nom = nom;
         this.commune = commune;
-
-        System.out.println("Maire: " + this.nom + " -- commune: " + this.commune);
     }
 
     public String getNom() {

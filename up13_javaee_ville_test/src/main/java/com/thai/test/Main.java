@@ -17,11 +17,10 @@ public class Main {
     public static void main(String[] args) {
 
         // Premier
-        Commune comHautesAlpes0 = new Commune("Abriès", "05460");
-        Commune comHautesAlpes1 = new Commune("Aiguilles", "05470");
+        Commune comHautesAlpes0 = new Commune("Jarjayes", "05460");
+        Commune comHautesAlpes1 = new Commune("Villar-d'Arêne", "05470");
         Commune comHautesAlpes2 = new Commune("Ancelle", "05260");
-        Commune comHautesAlpes3 = new Commune("Antonaves", "05300");
-
+        Commune comHautesAlpes3 = new Commune("Puy-Saint-Eusèbe", "05300");
 
         Departement deptHautesAlpes = new Departement("Hautes-Alpes");
         Commune[] comHautesAlpes = { comHautesAlpes0, comHautesAlpes1, comHautesAlpes2, comHautesAlpes3 };
@@ -35,10 +34,10 @@ public class Main {
         comHautesAlpes2.setDepartement(deptHautesAlpes);
         comHautesAlpes3.setDepartement(deptHautesAlpes);
 
-        Maire maireHautesAlpes0 = new Maire("Abriès Maire", comHautesAlpes0);
-        Maire maireHautesAlpes1 = new Maire("Aiguilles Maire", comHautesAlpes1);
+        Maire maireHautesAlpes0 = new Maire("Jarjayes Maire", comHautesAlpes0);
+        Maire maireHautesAlpes1 = new Maire("Villar-d'Arêne Maire", comHautesAlpes1);
         Maire maireHautesAlpes2 = new Maire("Ancelle Maire", comHautesAlpes2);
-        Maire maireHautesAlpes3 = new Maire("Antonaves Maire", comHautesAlpes3);
+        Maire maireHautesAlpes3 = new Maire("Puy-Saint-Eusèbe Maire", comHautesAlpes3);
 
         comHautesAlpes0.setMaire(maireHautesAlpes0);
         comHautesAlpes1.setMaire(maireHautesAlpes1);
@@ -52,9 +51,9 @@ public class Main {
         maireList.add(maireHautesAlpes3);
 
         // Deuxieme
-        Commune comEssone0 = new Commune("Abbéville-la-Rivière", "91150");
-        Commune comEssone1 = new Commune("Angerville", "91670");
-        Commune comEssone2 = new Commune("Arrancourt", "91690");
+        Commune comEssone0 = new Commune("Viry-Châtillon", "91150");
+        Commune comEssone1 = new Commune("Étréchy", "91670");
+        Commune comEssone2 = new Commune("Mauchamps", "91690");
         Commune comEssone3 = new Commune("Athis-Mons", "91200");
 
         Departement deptEssone = new Departement("Essonne");
@@ -68,9 +67,9 @@ public class Main {
         comEssone2.setDepartement(deptEssone);
         comEssone3.setDepartement(deptEssone);
 
-        Maire maireEssone0 = new Maire("Abbéville-la-Rivière Maire", comEssone0);
-        Maire maireEssone1 = new Maire("Angerville Maire", comEssone1);
-        Maire maireEssone2 = new Maire("Arrancourt Maire", comEssone2);
+        Maire maireEssone0 = new Maire("Viry-Châtillon Maire", comEssone0);
+        Maire maireEssone1 = new Maire("Étréchy Maire", comEssone1);
+        Maire maireEssone2 = new Maire("Mauchamps Maire", comEssone2);
         Maire maireEssone3 = new Maire("Athis-Mons Maire", comEssone3);
 
         comEssone0.setMaire(maireEssone0);
@@ -102,6 +101,20 @@ public class Main {
 
         em.getTransaction().commit();
 
+        // Clear object
+        em.getEntityManagerFactory().getCache().evictAll();
+
+        // Retrieve
+        Departement dept = em.find(Departement.class, 17L);
+        System.out.println("Department : " + dept.getNom());
+        for (Commune commune : dept.getCommunes()) {
+            System.out.println("Communs de Department : " + commune.getNom());
+        }
+        for (Commune commune : dept.getCommunes()) {
+            System.out.println("Maire de commune " + commune.getNom() + ": " + dept.getMaire(commune).getNom());
+        }
+
         System.out.println("Finish");
+
     }
 }

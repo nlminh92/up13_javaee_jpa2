@@ -1,7 +1,7 @@
 package com.thai.model;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 @Entity
@@ -23,7 +24,8 @@ public class Departement {
     private String nom;
 
     @OneToMany
-    private Collection<Commune> communeList = new ArrayList<Commune>();
+    @OrderBy("nom DESC")
+    private List<Commune> communeList = new ArrayList<Commune>();
 
     public Departement() {
         this(null, null);
@@ -33,7 +35,7 @@ public class Departement {
         this(nom, null);
     }
 
-    public Departement(String nom, Collection<Commune> communes) {
+    public Departement(String nom, List<Commune> communes) {
         this.nom = nom;
         if (communes != null) {
             this.communeList = communes;
@@ -48,15 +50,37 @@ public class Departement {
         this.nom = nom;
     }
 
-    public Collection<Commune> getCommunes() {
-        return communeList;
+    @OrderBy("nom DESC")
+    public List<Commune> getCommunes() {
+        return new ArrayList<Commune>(communeList);
     }
 
-    public void setCommunes(Collection<Commune> communeList) {
+    public void setCommunes(List<Commune> communeList) {
         this.communeList = communeList;
     }
 
     public void setCommune(Commune commune) {
         this.communeList.add(commune);
+    }
+
+    public Maire getMaire(Commune commune) {
+        Maire maire = commune.getMaire();
+        if (maire == null) {
+            return null;
+        }
+        return new Maire(maire.getNom(), maire.getCommune());
+    }
+
+    public List<Maire> getMaires() {
+        Maire maire = null;
+        List<Maire> maireList = new ArrayList<Maire>();
+        for (Commune commune : communeList) {
+            maire = getMaire(commune);
+            if (maire == null) {
+                continue;
+            }
+            maireList.add(new Maire(maire.getNom(), maire.getCommune()));
+        }
+        return maireList;
     }
 }
