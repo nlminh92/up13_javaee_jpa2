@@ -52,7 +52,15 @@ public class Departement {
 
     @OrderBy("nom DESC")
     public List<Commune> getCommunes() {
-        return new ArrayList<Commune>(communeList);
+        List<Commune> newCommunes = new ArrayList<Commune>();
+        for (Commune commune : communeList) {
+            Commune copycat = new Commune();
+            copycat.setCodePostal(commune.getCodePostal());
+            copycat.setMaire(commune.getMaire());
+            copycat.setNom(commune.getNom());
+            newCommunes.add(copycat);
+        }
+        return newCommunes;
     }
 
     public void setCommunes(List<Commune> communeList) {

@@ -82,6 +82,23 @@ public class Main {
         maireList.add(maireEssone2);
         maireList.add(maireEssone3);
 
+        // Troisieme - for testing - no persistence
+        Commune comYvelines0 = new Commune("Jumeauville", "78580");
+        Commune comYvelines1 = new Commune("Cernay-la-Ville", "78720");
+
+        Departement deptYvelines = new Departement("Yvelines");
+        Commune[] comYvelines = { comYvelines0, comYvelines1 };
+        deptYvelines.setCommunes(Arrays.asList(comYvelines));
+
+        comYvelines0.setDepartement(deptYvelines);
+        comYvelines1.setDepartement(deptYvelines);
+
+        Maire maireYvelines0 = new Maire("Jumeauville Maire", comYvelines0);
+        Maire maireYvelines1 = new Maire("Cernay-la-Ville Maire", comYvelines0);
+
+        comYvelines0.setMaire(maireYvelines0);
+        comYvelines1.setMaire(maireYvelines1);
+
         // Persistence
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ville_test");
         EntityManager em = emf.createEntityManager();
@@ -105,12 +122,32 @@ public class Main {
         em.getEntityManagerFactory().getCache().evictAll();
 
         // Retrieve
+        em.getTransaction().begin();
         Departement dept = em.find(Departement.class, 17L);
-        System.out.println("Department : " + dept.getNom());
-        for (Commune commune : dept.getCommunes()) {
+        System.out.println("BEFORE CHANGING THE LIST. Department : " + dept.getNom());
+        List<Commune> retrievedCommuneList = dept.getCommunes();
+        for (Commune commune : retrievedCommuneList) {
             System.out.println("Communs de Department : " + commune.getNom());
+            System.out.println("Maire de commune " + commune.getNom() + ": " + dept.getMaire(commune).getNom());
         }
-        for (Commune commune : dept.getCommunes()) {
+
+        // Change the retrieved list
+        for (Commune commune : retrievedCommuneList) {
+            commune.setNom("Nom Identique");
+            commune.setMaire(maireYvelines0);
+        }
+        em.getTransaction().commit();
+        System.out.println("NEWLY-CHANGED LIST:");
+        for (Commune commune : retrievedCommuneList) {
+            System.out.println("Communs de Department : " + commune.getNom());
+            System.out.println("Maire de commune " + commune.getNom() + ": " + dept.getMaire(commune).getNom());
+        }
+
+        System.out.println("AFTER CHANGING THE LIST. Department : " + dept.getNom());
+        dept = em.find(Departement.class, 17L);
+        retrievedCommuneList = dept.getCommunes();
+        for (Commune commune : retrievedCommuneList) {
+            System.out.println("Communs de Department : " + commune.getNom());
             System.out.println("Maire de commune " + commune.getNom() + ": " + dept.getMaire(commune).getNom());
         }
 

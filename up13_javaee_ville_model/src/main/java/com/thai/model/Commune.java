@@ -39,7 +39,7 @@ public class Commune {
     public Commune(String nom, String codePostal, Departement departement) {
         this.nom = nom;
         this.codePostal = codePostal;
-        this.setDepartement(departement);
+        this.departement = departement;
     }
 
     public String getNom() {
