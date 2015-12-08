@@ -2,6 +2,7 @@ package com.thai.test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -150,21 +151,17 @@ public class MainAddress {
         em.persist(deptHautesAlpes);
         em.persist(deptEssone);
 
+        em.flush();
         em.getTransaction().commit();
-
         // Clear object
         em.getEntityManagerFactory().getCache().evictAll();
 
-        // Retrieve
-        em.getTransaction().begin();
-        Departement dept = em.find(Departement.class, 17L);
-        List<Commune> retrievedCommuneList = dept.getCommunes();
+        Departement dept = em.find(Departement.class, deptHautesAlpes.getId());
+        Collection<Commune> retrievedCommuneList = dept.getCommunes();
         for (Commune commune : retrievedCommuneList) {
             System.out.println("Communs de Department : " + commune.getNom());
             System.out.println("Maire de commune " + commune.getNom() + ": " + dept.getMaire(commune).getNom());
         }
-
-        em.getTransaction().commit();
 
         System.out.println("Finish");
 

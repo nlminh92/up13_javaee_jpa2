@@ -1,10 +1,13 @@
 package com.thai.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +26,10 @@ public class Departement {
     @Column(name = "nom", length = 40)
     private String nom;
 
-    @OneToMany
+    @OneToMany(
+            cascade=CascadeType.PERSIST,
+            fetch=FetchType.EAGER,
+            mappedBy="departement")
     @OrderBy("nom DESC")
     private List<Commune> communeList = new ArrayList<Commune>();
 
@@ -42,6 +48,10 @@ public class Departement {
         }
     }
 
+    public long getId() {
+        return id;
+    }
+
     public String getNom() {
         return nom;
     }
@@ -50,8 +60,7 @@ public class Departement {
         this.nom = nom;
     }
 
-    @OrderBy("nom DESC")
-    public List<Commune> getCommunes() {
+    public Collection<Commune> getCommunes() {
         List<Commune> newCommunes = new ArrayList<Commune>();
         for (Commune commune : communeList) {
             Commune copycat = new Commune();

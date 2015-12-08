@@ -2,6 +2,7 @@ package com.thai.test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -116,6 +117,7 @@ public class Main {
         em.persist(deptHautesAlpes);
         em.persist(deptEssone);
 
+        em.flush();
         em.getTransaction().commit();
 
         // Clear object
@@ -123,11 +125,14 @@ public class Main {
 
         // Retrieve
         em.getTransaction().begin();
-        Departement dept = em.find(Departement.class, 17L);
+        Departement dept = em.find(Departement.class, deptHautesAlpes.getId());
         System.out.println("BEFORE CHANGING THE LIST. Department : " + dept.getNom());
-        List<Commune> retrievedCommuneList = dept.getCommunes();
+        Collection<Commune> retrievedCommuneList = dept.getCommunes();
         for (Commune commune : retrievedCommuneList) {
             System.out.println("Communs de Department : " + commune.getNom());
+        }
+
+        for (Commune commune : retrievedCommuneList) {
             System.out.println("Maire de commune " + commune.getNom() + ": " + dept.getMaire(commune).getNom());
         }
 
@@ -144,7 +149,7 @@ public class Main {
         }
 
         System.out.println("AFTER CHANGING THE LIST. Department : " + dept.getNom());
-        dept = em.find(Departement.class, 17L);
+        dept = em.find(Departement.class, deptHautesAlpes.getId());
         retrievedCommuneList = dept.getCommunes();
         for (Commune commune : retrievedCommuneList) {
             System.out.println("Communs de Department : " + commune.getNom());

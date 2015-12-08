@@ -2,14 +2,20 @@ package com.thai.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 
 @Entity
 @Table(name = "t_maire")
@@ -24,10 +30,14 @@ public class Maire implements Serializable {
     @Column(name = "nom", length = 40)
     private String nom;
 
-    @JoinColumn(name="commune_id", insertable=false, updatable=false)
+    // Prevention of duplicate writing to foreign key columns
+    @JoinColumn(name = "commune_id", insertable = false, updatable = false)
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JoinFetch(JoinFetchType.OUTER)
     private Commune commune;
 
     @Embedded
+    @OneToOne(mappedBy="maire")
     private Address address;
 
     public Maire() {
