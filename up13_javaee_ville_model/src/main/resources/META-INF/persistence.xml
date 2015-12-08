@@ -10,6 +10,7 @@ http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
         <class>com.thai.model.Commune</class>
         <class>com.thai.model.Departement</class>
         <class>com.thai.model.Maire</class>
+        <class>com.thai.model.Address</class>
 
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/tp_javaee_2015" />

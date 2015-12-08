@@ -1,6 +1,9 @@
 package com.thai.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,7 +13,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "t_commune")
-public class Commune {
+public class Commune implements Serializable {
+
+    private static final long serialVersionUID = 2L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,6 +32,9 @@ public class Commune {
 
     @OneToOne
     private Departement departement;
+
+    @Embedded
+    private Address address;
 
     public Commune() {
         this(null, null);
@@ -72,6 +80,14 @@ public class Commune {
 
     public void setDepartement(Departement departement) {
         this.departement = departement;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
 }
