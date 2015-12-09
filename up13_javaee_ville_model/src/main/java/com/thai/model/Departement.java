@@ -3,6 +3,7 @@ package com.thai.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,7 +32,7 @@ public class Departement {
             fetch=FetchType.EAGER,
             mappedBy="departement")
     @OrderBy("nom DESC")
-    private List<Commune> communeList = new ArrayList<Commune>();
+    private Collection<Commune> communeList = new TreeSet<Commune>(new NameComparator());
 
     public Departement() {
         this(null, null);
@@ -72,8 +73,8 @@ public class Departement {
         return newCommunes;
     }
 
-    public void setCommunes(List<Commune> communeList) {
-        this.communeList = communeList;
+    public void setCommunes(Collection<Commune> communeList) {
+        this.communeList.addAll(communeList);
     }
 
     public void setCommune(Commune commune) {
