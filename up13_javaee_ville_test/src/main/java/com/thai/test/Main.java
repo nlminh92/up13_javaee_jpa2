@@ -13,7 +13,16 @@ import com.thai.model.Commune;
 import com.thai.model.Departement;
 import com.thai.model.Maire;
 
+/**
+ * Exercice 3
+ * @author HO Phu Thai
+ *
+ */
 public class Main {
+
+    public static void printEndLn() {
+        System.out.println("FINIR à mettre le donnes à jour.");
+    }
 
     public static void main(String[] args) {
 
@@ -123,40 +132,57 @@ public class Main {
         // Clear object
         em.getEntityManagerFactory().getCache().evictAll();
 
-        // Retrieve
+        // Demonstration of defensive copy in getCommunes() and getMaires()
         em.getTransaction().begin();
         Departement dept = em.find(Departement.class, deptHautesAlpes.getId());
-        System.out.println("BEFORE CHANGING THE LIST. Department : " + dept.getNom());
-        Collection<Commune> retrievedCommuneList = dept.getCommunes();
-        for (Commune commune : retrievedCommuneList) {
-            System.out.println("Communs de Department : " + commune.getNom());
-        }
 
+        System.out.println("BEFORE CHANGING THE LISTS. Department : " + dept.getNom());
+        Collection<Commune> retrievedCommuneList = dept.getCommunes();
+        Collection<Maire> retrievedMaireList = dept.getMaires();
+        for (Commune commune : retrievedCommuneList) {
+            System.out.println("Commune de departement : " + commune.getNom());
+        }
         for (Commune commune : retrievedCommuneList) {
             System.out.println("Maire de commune " + commune.getNom() + ": " + dept.getMaire(commune).getNom());
         }
+        for (Maire maire : retrievedMaireList) {
+            System.out.println("Un maire de departement: " + maire.getNom());
+        }
 
-        // Change the retrieved list
+        System.out.println("CHANGING THE LISTS...");
         for (Commune commune : retrievedCommuneList) {
             commune.setNom("Nom Identique");
             commune.setMaire(maireYvelines0);
         }
+        for (Maire maire: retrievedMaireList) {
+            maire.setNom("Nom Identique de Maire");
+            maire.setCommune(comEssone1);
+        }
+        retrievedCommuneList.add(comYvelines0);
+        retrievedMaireList.add(maireYvelines0);
         em.getTransaction().commit();
-        System.out.println("NEWLY-CHANGED LIST:");
+
+        System.out.println("NEWLY-CHANGED LISTS:");
         for (Commune commune : retrievedCommuneList) {
-            System.out.println("Communs de Department : " + commune.getNom());
+            System.out.println("Communs de departement : " + commune.getNom());
             System.out.println("Maire de commune " + commune.getNom() + ": " + dept.getMaire(commune).getNom());
         }
+        for (Maire maire : retrievedMaireList) {
+            System.out.println("Un maire de departement: " + maire.getNom());
+        }
 
-        System.out.println("AFTER CHANGING THE LIST. Department : " + dept.getNom());
+        System.out.println("AFTER CHANGING THE LISTS. Department : " + dept.getNom());
         dept = em.find(Departement.class, deptHautesAlpes.getId());
         retrievedCommuneList = dept.getCommunes();
+        retrievedMaireList = dept.getMaires();
         for (Commune commune : retrievedCommuneList) {
             System.out.println("Communs de Department : " + commune.getNom());
             System.out.println("Maire de commune " + commune.getNom() + ": " + dept.getMaire(commune).getNom());
         }
+        for (Maire maire : retrievedMaireList) {
+            System.out.println("Un maire de departement: " + maire.getNom());
+        }
 
-        System.out.println("Finish");
-
+        Main.printEndLn();
     }
 }

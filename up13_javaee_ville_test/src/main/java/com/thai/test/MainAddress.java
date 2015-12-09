@@ -14,6 +14,11 @@ import com.thai.model.Commune;
 import com.thai.model.Departement;
 import com.thai.model.Maire;
 
+/**
+ * Exercice 4
+ * @author HO Phu Thai
+ *
+ */
 public class MainAddress {
 
     public static void main(String[] args) {
@@ -159,11 +164,10 @@ public class MainAddress {
         Departement dept = em.find(Departement.class, deptHautesAlpes.getId());
         Collection<Commune> retrievedCommuneList = dept.getCommunes();
         for (Commune commune : retrievedCommuneList) {
-            System.out.println("Communs de Department : " + commune.getNom());
-            System.out.println("Maire de commune " + commune.getNom() + ": " + dept.getMaire(commune).getNom());
+            System.out.println("Address de commune " + commune.getNom() + ": " + commune.getAddress().getRue());
+            System.out.println("Address de maire " + commune.getNom() + ": " + dept.getMaire(commune).getAddress().getRue());
         }
 
-        System.out.println("Finish");
-
+        Main.printEndLn();
     }
 }

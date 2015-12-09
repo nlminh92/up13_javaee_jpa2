@@ -68,6 +68,7 @@ public class Departement {
             copycat.setCodePostal(commune.getCodePostal());
             copycat.setMaire(commune.getMaire());
             copycat.setNom(commune.getNom());
+            copycat.setAddress(commune.getAddress());
             newCommunes.add(copycat);
         }
         return newCommunes;
@@ -86,7 +87,7 @@ public class Departement {
         if (maire == null) {
             return null;
         }
-        return new Maire(maire.getNom(), maire.getCommune());
+        return new Maire(maire.getNom(), maire.getCommune(), maire.getAddress());
     }
 
     public List<Maire> getMaires() {

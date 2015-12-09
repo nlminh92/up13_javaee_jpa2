@@ -37,7 +37,7 @@ public class Maire implements Serializable {
     private Commune commune;
 
     @Embedded
-    @OneToOne(mappedBy="maire")
+    @OneToOne(mappedBy="maire", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Address address;
 
     public Maire() {
@@ -49,8 +49,13 @@ public class Maire implements Serializable {
     }
 
     public Maire(String nom, Commune commune) {
+        this(nom, commune, null);
+    }
+
+    public Maire(String nom, Commune commune, Address address) {
         this.nom = nom;
         this.commune = commune;
+        this.address = address;
     }
 
     public String getNom() {
